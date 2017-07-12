@@ -86,6 +86,12 @@ void MyAnalysis::SlaveBegin(TTree * /*tree*/) {
 	histograms.push_back(h_NElectron);
 	histograms_MC.push_back(h_NElectron);
 
+  h_MuonEta = new TH1F("MuonEta", "Muon Eta", 64, 0, 3.2);
+  h_MuonEta->SetXTitle("Muon Eta");
+  h_MuonEta->Sumw2();
+  histograms.push_back(h_MuonEta);
+  histograms_MC.push_back(h_MuonEta);
+
 	for(int i=0 ; i < 9; i++){
 
   h_NJet_S[i] = new TH1F(Form("NJet_S%i_%s",i,option.Data()), "Number of jets", 12, 0, 12);
@@ -105,6 +111,7 @@ void MyAnalysis::SlaveBegin(TTree * /*tree*/) {
   h_NBJet_S[i]->Sumw2();
   histograms.push_back(h_NBJet_S[i]);
   histograms_MC.push_back(h_NBJet_S[i]);
+
 	}
 }
 
@@ -137,6 +144,11 @@ Bool_t MyAnalysis::Process(Long64_t entry) {
 			 if (N_IsoMuon == 2) muon2 = &(*muon);
 		 }
 	 }
+if(N_IsoMuon == 1){
+  TLorentzVector Muon;
+  Muon.SetXYZM(Muon_Px[0],Muon_Py[0],Muon_Pz[0],0);
+   h_MuonEta->Fill(Muon.Eta(),EventWeight);
+}
 
 	 h_NMuon->Fill(N_IsoMuon, EventWeight);
 
