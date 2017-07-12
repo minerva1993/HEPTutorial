@@ -192,7 +192,8 @@ public:
 	 TH1F *h_NBJet_S[9];
 	 TH1F *h_JetMass_S[9];
    TH1F *h_MuonEta;
-
+   TH1F *h_JetEta;
+   TH1F *h_metPt;
    vector<TH1F*> histograms;
    vector<TH1F*> histograms_MC;
   

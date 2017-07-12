@@ -92,6 +92,18 @@ void MyAnalysis::SlaveBegin(TTree * /*tree*/) {
   histograms.push_back(h_MuonEta);
   histograms_MC.push_back(h_MuonEta);
 
+  h_JetEta = new TH1F("JetEta", "Jet Eta", 64, 0, 3.2);
+  h_JetEta->SetXTitle("Jet Eta");
+  h_JetEta->Sumw2();
+  histograms.push_back(h_JetEta);
+  histograms_MC.push_back(h_JetEta);
+
+  h_metPt = new TH1F("metPt", "MET Pt", 60, 0, 50);
+  h_metPt->SetXTitle("MET Pt (GeV)");
+  h_metPt->Sumw2();
+  histograms.push_back(h_metPt);
+  histograms_MC.push_back(h_metPt);
+
 	for(int i=0 ; i < 9; i++){
 
   h_NJet_S[i] = new TH1F(Form("NJet_S%i_%s",i,option.Data()), "Number of jets", 12, 0, 12);
@@ -144,11 +156,12 @@ Bool_t MyAnalysis::Process(Long64_t entry) {
 			 if (N_IsoMuon == 2) muon2 = &(*muon);
 		 }
 	 }
-if(N_IsoMuon == 1){
-  TLorentzVector Muon;
-  Muon.SetXYZM(Muon_Px[0],Muon_Py[0],Muon_Pz[0],0);
-   h_MuonEta->Fill(Muon.Eta(),EventWeight);
-}
+
+    if(N_IsoMuon == 1){
+      TLorentzVector Muon;
+      Muon.SetXYZM(Muon_Px[0],Muon_Py[0],Muon_Pz[0],0);
+       h_MuonEta->Fill(Muon.Eta(),EventWeight);
+    }
 
 	 h_NMuon->Fill(N_IsoMuon, EventWeight);
 
@@ -205,6 +218,20 @@ if(N_IsoMuon == 1){
         	h_JetMass_S[0]->Fill((*jet_1 + *jet_2).M(),EventWeight);
       	}
 			}
+
+    TLorentzVector Jets[N_Jets];
+    for(int i = 0; i < N_Jets; ++i){
+      Jets[i].SetXYZM(Jet_Px[i], Jet_Py[i], Jet_Pz[i], Jet_E[i]);
+      h_JetEta->Fill(Jets[i].Eta(),EventWeight);
+    }
+
+/////MET w/ 1 iso muon
+  if(N_IsoMuon == 1){
+    TLorentzVector MET;
+    MET.SetXYZM(MET_px, MET_py, 0, 0);
+    h_metPt->Fill(MET.Pt(),EventWeight);
+  }
+
 
 ////S1
 if (triggerIsoMu24){
