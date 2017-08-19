@@ -171,6 +171,8 @@ public:
    virtual void Terminate();
    
    void BuildEvent();
+   double transverseMass(const TLorentzVector & l, const TLorentzVector & nu);
+
    
    int TotalEvents;
    vector<MyJet> Jets;
@@ -180,20 +182,18 @@ public:
    
    TLorentzVector hadB, lepB, hadWq, hadWqb, lepWl, lepWn;
    TLorentzVector met;
-   
    float weight_factor;
    float SF_b;
    
-   TH1F *h_Mmumu;
    TH1F *h_NMuon;
 	 TH1F *h_NElectron; 
-   TH1F *h_Mee;
 	 TH1F *h_NJet_S[9];
 	 TH1F *h_NBJet_S[9];
-	 TH1F *h_JetMass_S[9];
-   TH1F *h_MuonEta;
-   TH1F *h_JetEta;
-   TH1F *h_metPt;
+   TH1F *h_metPt[9];
+   TH1F *h_LepWMass[9];
+   TH1F *h_LepTopMass[9];
+   TH1F *h_HadWMass[9];
+   TH1F *h_HadTopMass[9];
    vector<TH1F*> histograms;
    vector<TH1F*> histograms_MC;
   
