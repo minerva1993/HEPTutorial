@@ -173,7 +173,7 @@ Bool_t MyAnalysis::Process(Long64_t entry) {
   int N_BJets = 0;
 
   vector<TLorentzVector> v_jets;
-  vector<TLorentzVector> v_bjets;
+  vector<int> v_bjetsIdx;
 
   for (vector<MyJet>::iterator jt = Jets.begin(); jt != Jets.end(); ++jt) {
     if (abs(jt->Eta()) < 2.4 && (jt->Pt()) > JetPtCut){
@@ -184,13 +184,14 @@ Bool_t MyAnalysis::Process(Long64_t entry) {
     
       if (jt->IsBTagged()){
         ++N_BJets;
-        v_bjets.push_back(tmpjet);
+        int bjetIdx = jt - Jets.begin();
+        v_bjetsIdx.push_back(bjetIdx);
       }
     }
   }
 
   TLorentzVector Jets[N_Jets];
-  TLorentzVector BJets[N_BJets];
+  //TLorentzVector BJets[N_BJets];
 
   for(int i = 0; i < N_Jets; ++i){
     Jets[i].SetPxPyPzE(Jet_Px[i], Jet_Py[i], Jet_Pz[i], Jet_E[i]);
@@ -209,7 +210,7 @@ Bool_t MyAnalysis::Process(Long64_t entry) {
 
     h_NJet_S[1]->Fill(N_Jets, EventWeight);
     h_NBJet_S[1]->Fill(N_BJets, EventWeight);
-
+    h_metPt[1]->Fill(MET.Pt(),EventWeight);
       ////S2
     if (N_IsoElectron == 1 || N_IsoMuon == 1){
       if (N_IsoElectron == 1) lepton = *singleMu;
@@ -218,57 +219,103 @@ Bool_t MyAnalysis::Process(Long64_t entry) {
 
       double tmplepbDR = 99;
       double lepbDR = 99;
-      double leptop;
+      double leptop, hadtop, hadW;
+      double tmpchi2;
+      double chi2 = 10000000000;
+      int jetIdx;
 
-      TLorentzVector lepb;
+      TLorentzVector lepb, hadb, j1, j2;
 
       if (N_BJets >= 1){
-        for(int i = 0; i < N_BJets; i++){
-          lepb = v_bjets[i];
+        for(int i = 0; i < v_bjetsIdx.size(); i++){
+          int tmpIdx = v_bjetsIdx[i];
+          lepb = v_jets[tmpIdx];
           tmplepbDR = lepton.DeltaR(lepb);
           
           if(tmplepbDR < lepbDR){
             lepbDR = tmplepbDR;
             leptop = (lepton + MET + lepb).M();
+            jetIdx = tmpIdx;
+          }
+          if (N_Jets < 4) continue;
+
+          for(int j = 0; j < v_bjetsIdx.size(); j++){
+            int tmpIdx2 = v_bjetsIdx[j];
+            if (tmpIdx2 != jetIdx){
+              hadb = v_jets[tmpIdx2];
+
+              for(int k = 0; k < N_Jets; k++){
+                if(k != tmpIdx && k != tmpIdx2) j1 = v_jets[k];
+              
+                for(int l = 0; l < N_Jets; l++){
+                  if(l != tmpIdx && l != tmpIdx2 && l != k) j2 = v_jets[l];
+
+                  tmpchi2 = TMath::Power(((j1 +j2).M()-80.4)/2.085, 2.0)
+                          + TMath::Power(((hadb + j1 +j2 ).M()-172.44)/1.41, 2.0);
+
+                  if(tmpchi2 < chi2){
+                    chi2 = tmpchi2;
+                    hadtop = (hadb + j1 +j2 ).M();
+                    hadW = (j1 + j2).M();
+                  }         
+                }
+              }
+            }
           }
         }
       }
+      //cout << i << endl;  
 
       h_NJet_S[2]->Fill(N_Jets, EventWeight);
       h_NBJet_S[2]->Fill(N_BJets, EventWeight);
+      h_metPt[2]->Fill(MET.Pt(),EventWeight);
       h_LepWMass[2]->Fill(transverseM, EventWeight);
       h_LepTopMass[2]->Fill(leptop, EventWeight);
+      h_HadWMass[2]->Fill(hadW, EventWeight);
+      h_HadTopMass[2]->Fill(hadtop, EventWeight);
 
       ////S3
       if (N_Jets >= 4) {
         h_NJet_S[3]->Fill(N_Jets, EventWeight);
         h_NBJet_S[3]->Fill(N_BJets, EventWeight);
+        h_metPt[3]->Fill(MET.Pt(),EventWeight);
         h_LepWMass[3]->Fill(transverseM, EventWeight);
         h_LepTopMass[3]->Fill(leptop, EventWeight);
+        h_HadWMass[3]->Fill(hadW, EventWeight);
+        h_HadTopMass[3]->Fill(hadtop, EventWeight);
       }
 
       ////S4
       if (N_BJets >= 1) {
         h_NJet_S[4]->Fill(N_Jets, EventWeight);
         h_NBJet_S[4]->Fill(N_BJets, EventWeight);
+        h_metPt[4]->Fill(MET.Pt(),EventWeight);
         h_LepWMass[4]->Fill(transverseM, EventWeight);
         h_LepTopMass[4]->Fill(leptop, EventWeight);
+        h_HadWMass[4]->Fill(hadW, EventWeight);
+        h_HadTopMass[4]->Fill(hadtop, EventWeight);
       }
 
       ////S5
       if (N_Jets >= 4 &&  N_BJets >= 1) {
         h_NJet_S[5]->Fill(N_Jets, EventWeight);
         h_NBJet_S[5]->Fill(N_BJets, EventWeight);
+        h_metPt[5]->Fill(MET.Pt(),EventWeight);
         h_LepWMass[5]->Fill(transverseM, EventWeight);
         h_LepTopMass[5]->Fill(leptop, EventWeight);
+        h_HadWMass[5]->Fill(hadW, EventWeight);
+        h_HadTopMass[5]->Fill(hadtop, EventWeight);
       }
 
       ////S6
       if (N_BJets >= 2){
         h_NJet_S[6]->Fill(N_Jets, EventWeight);
         h_NBJet_S[6]->Fill(N_BJets, EventWeight);
+        h_metPt[6]->Fill(MET.Pt(),EventWeight);
         h_LepWMass[6]->Fill(transverseM, EventWeight);
         h_LepTopMass[6]->Fill(leptop, EventWeight);
+        h_HadWMass[6]->Fill(hadW, EventWeight);
+        h_HadTopMass[6]->Fill(hadtop, EventWeight);
       }
 
 
@@ -276,8 +323,11 @@ Bool_t MyAnalysis::Process(Long64_t entry) {
       if (N_Jets >=4 && N_BJets >= 2){
         h_NJet_S[7]->Fill(N_Jets, EventWeight);
         h_NBJet_S[7]->Fill(N_BJets, EventWeight);
+        h_metPt[7]->Fill(MET.Pt(),EventWeight);
         h_LepWMass[7]->Fill(transverseM, EventWeight);
         h_LepTopMass[7]->Fill(leptop, EventWeight);
+        h_HadWMass[7]->Fill(hadW, EventWeight);
+        h_HadTopMass[7]->Fill(hadtop, EventWeight);
       }
 /////
     }//pass lepton
