@@ -129,7 +129,7 @@ void Plotter::Plot(std::string filename) {
       std::string plotname;
 		if (data.size() > 0) {
          plotname = std::string(data.at(0).at(i)->GetName());
-			data.at(0).at(i)->SetMaximum(1.2 * data.at(0).at(i)->GetMaximum());
+			data.at(0).at(i)->SetMaximum(1.4 * data.at(0).at(i)->GetMaximum());
 			data.at(0).at(i)->GetXaxis()->SetTitleOffset(1.3);
 			data.at(0).at(i)->GetYaxis()->SetTitleOffset(1.3);
 			data.at(0).at(i)->GetYaxis()->SetTitle("Events");
