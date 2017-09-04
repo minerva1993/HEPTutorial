@@ -11,33 +11,33 @@ void MyAnalysis::BuildEvent() {
 
   Muons.clear();
   for (int i = 0; i < NMuon; ++i) {
-  MyMuon muon(Muon_Px[i], Muon_Py[i], Muon_Pz[i], Muon_E[i]);
-  muon.SetIsolation(Muon_Iso[i]);
-  muon.SetCharge(Muon_Charge[i]);
-  Muons.push_back(muon);
+    MyMuon muon(Muon_Px[i], Muon_Py[i], Muon_Pz[i], Muon_E[i]);
+    muon.SetIsolation(Muon_Iso[i]);
+    muon.SetCharge(Muon_Charge[i]);
+    Muons.push_back(muon);
   }
 
   Electrons.clear();
   for (int i = 0; i < NElectron; ++i) {
-  MyElectron electron(Electron_Px[i], Electron_Py[i], Electron_Pz[i], Electron_E[i]);
-  electron.SetIsolation(Electron_Iso[i]);
-  electron.SetCharge(Electron_Charge[i]);
-  Electrons.push_back(electron);
+    MyElectron electron(Electron_Px[i], Electron_Py[i], Electron_Pz[i], Electron_E[i]);
+    electron.SetIsolation(Electron_Iso[i]);
+    electron.SetCharge(Electron_Charge[i]);
+    Electrons.push_back(electron);
   }
 
   Photons.clear();
   for (int i = 0; i < NPhoton; ++i) {
-  MyPhoton photon(Photon_Px[i], Photon_Py[i], Photon_Pz[i], Photon_E[i]);
-  photon.SetIsolation(Photon_Iso[i]);
-  Photons.push_back(photon);
+    MyPhoton photon(Photon_Px[i], Photon_Py[i], Photon_Pz[i], Photon_E[i]);
+    photon.SetIsolation(Photon_Iso[i]);
+    Photons.push_back(photon);
   }
 
   Jets.clear();
   for (int i = 0; i < NJet; ++i) {
-  MyJet jet(Jet_Px[i], Jet_Py[i], Jet_Pz[i], Jet_E[i]);
-  jet.SetBTagDiscriminator(Jet_btag[i]);
-  jet.SetJetID(Jet_ID[i]);
-  Jets.push_back(jet);
+    MyJet jet(Jet_Px[i], Jet_Py[i], Jet_Pz[i], Jet_E[i]);
+    jet.SetBTagDiscriminator(Jet_btag[i]);
+    jet.SetJetID(Jet_ID[i]);
+    Jets.push_back(jet);
   }
 
   hadB.SetXYZM(MChadronicBottom_px, MChadronicBottom_py, MChadronicBottom_pz, 4.8);
