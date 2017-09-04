@@ -1,4 +1,5 @@
 #include <TFitResult.h>
+#include <TMath.h>
 
 void topMassFit(){
 
@@ -19,17 +20,17 @@ void topMassFit(){
 
 
   //define gaus fit fct
-  TF1 * mygaus1 = new TF1("mygaus1", "[0]/(sqrt(2.0*3.14151927)*[2])*exp(-(x-[1])*(x-[1])/(2.0*[2]*[2]))", 100.0, 240.0);
+  TF1 *mygaus1 = new TF1("mygaus1", "[0]/(sqrt(2.0*3.14151927)*[2])*exp(-(x-[1])*(x-[1])/(2.0*[2]*[2]))", 100.0, 240.0);
     mygaus1->SetParName(0, "Normalize");
     mygaus1->SetParName(1, "Mean");
     mygaus1->SetParName(2, "Width");
-    double initval1[3] = { 30.0, 172, 30};
+    double initval1[3] = { 100, 172.0, 10};
     mygaus1->SetParameters(initval1);
 
-  TF1 * mygaus2 = new TF1("mygaus2", "[0]/(sqrt(2.0*3.14151927)*[2])*exp(-(x-[1])*(x-[1])/(2.0*[2]*[2]))", 100.0, 240.0);
-    mygaus2->SetParName(0, "Normalize");
-    mygaus2->SetParName(1, "Mean");
-    mygaus2->SetParName(2, "Width");
+  TF1 *mygaus2 = new TF1("mygaus2", "[3]/(sqrt(2.0*3.14151927)*[5])*exp(-(x-[4])*(x-[4])/(2.0*[5]*[5]))", 100.0, 240.0);
+    mygaus2->SetParName(3, "Normalize");
+    mygaus2->SetParName(4, "Mean");
+    mygaus2->SetParName(5, "Width");
     double initval2[3] = { 100.0, 172, 20};
     mygaus2->SetParameters(initval2);
 
@@ -39,22 +40,22 @@ void topMassFit(){
 
   //store fit result
   TFitResultPtr r1= h_lepT->Fit(mygaus1, "S");
-  Double_t par4   = r1->Parameter(0);
-  Double_t par5   = r1->Parameter(1);
-  Double_t par6   = r1->Parameter(2);
-	double initval3[3] = {par4,par5,par6};
+  Double_t par0   = r1->Parameter(0);
+  Double_t par1   = r1->Parameter(1);
+  Double_t par2   = r1->Parameter(2);
+	double initval3[3] = {par0,par1,par2};
 
   TFitResultPtr r2= h_hadT->Fit(mygaus2, "S");
-  Double_t par7   = r2->Parameter(0);
-  Double_t par8   = r2->Parameter(1);
-  Double_t par9   = r2->Parameter(2);
-  double initval4[3] = {par7,par8,par9};
+  Double_t par3   = r2->Parameter(0);
+  Double_t par4   = r2->Parameter(1);
+  Double_t par5   = r2->Parameter(2);
+  double initval4[3] = {par3,par4,par5};
 
   //from TFitResult, we create bkg2 which will appear on our canvas
-  TF1* lepT2 = new TF1("lepT2", "[8]*exp(-[9]*(x/100)+[10]*(x/100)*(x/100))", 100.0, 250.0);
+  TF1*lepT2 = new TF1("lepT2", "[8]*exp(-[9]*(x/100)+[10]*(x/100)*(x/100))", 100.0, 250.0);
 	lepT2->SetParameters(initval3);
 
-  TF1* hadT2 = new TF1("hadT2", "[11]*exp(-[12]*(x/100)+[13]*(x/100)*(x/100))", 200.0, 250.0);
+  TF1*hadT2 = new TF1("hadT2", "[11]*exp(-[12]*(x/100)+[13]*(x/100)*(x/100))", 200.0, 250.0);
   hadT2->SetParameters(initval4);
 
   //draw
