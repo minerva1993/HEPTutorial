@@ -65,7 +65,7 @@ int main() {
 	P.AddBg(I->histograms, std::string("single Top"));
    
 	P.Plot(string("results.pdf"));
-   
+/*
 	Plotter P_MC;
 	P_MC.AddBg(B->histograms_MC, std::string("TTbar"));
 	P_MC.AddBg(C->histograms_MC, std::string("Wjets"));
@@ -76,7 +76,7 @@ int main() {
 	P_MC.AddBg(H->histograms_MC, std::string("QCD"));
 	P_MC.AddBg(I->histograms_MC, std::string("single Top"));
   P_MC.Plot(string("results_MC.pdf"));
-
+*/
    for ( int i = 0 ; i < A->histograms.size() ; i++)
    {
    double N_data = A->histograms[i]->Integral();

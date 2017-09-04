@@ -76,43 +76,43 @@ void MyAnalysis::SlaveBegin(TTree * /*tree*/) {
 
   for(int i=0 ; i < 9; i++){
 
-    h_NJet_S[i] = new TH1F(Form("NJet_S%i_%s",i,option.Data()), "Number of jets", 12, 0, 12);
+    h_NJet_S[i] = new TH1F(Form("NJet_S%i",i), "Number of jets", 12, 0, 12);
     h_NJet_S[i]->SetXTitle(Form("Jet Multplicity (S%i)",i));
     h_NJet_S[i]->Sumw2();
     histograms.push_back(h_NJet_S[i]);
     histograms_MC.push_back(h_NJet_S[i]);
 
-    h_NBJet_S[i] = new TH1F(Form("NBJet_S%i_%s",i,option.Data()), "Number of b jets", 5, 0, 5);
+    h_NBJet_S[i] = new TH1F(Form("NBJet_S%i",i), "Number of b jets", 5, 0, 5);
     h_NBJet_S[i]->SetXTitle("b-tagged Jet Multiplicity");
     h_NBJet_S[i]->Sumw2();
     histograms.push_back(h_NBJet_S[i]);
     histograms_MC.push_back(h_NBJet_S[i]);
 
-    h_metPt[i] = new TH1F(Form("metPt_S%i_%s",i,option.Data()), "MET Pt", 40, 0, 200);
+    h_metPt[i] = new TH1F(Form("metPt_S%i",i), "MET Pt", 40, 0, 200);
     h_metPt[i]->SetXTitle("MET Pt (GeV)");
     h_metPt[i]->Sumw2();
     histograms.push_back(h_metPt[i]);
     histograms_MC.push_back(h_metPt[i]);
 
-    h_LepWMass[i] = new TH1F(Form("LepWMass_S%i_%s",i,option.Data()), "W Mass (Lep Top)", 29 ,10 ,300);
+    h_LepWMass[i] = new TH1F(Form("LepWMass_S%i",i), "W Mass (Lep Top)", 29 ,10 ,300);
     h_LepWMass[i]->SetXTitle("W Mass (Lep Top) (GeV)");
     h_LepWMass[i]->Sumw2();
     histograms.push_back(h_LepWMass[i]);
     histograms_MC.push_back(h_LepWMass[i]);
 
-    h_LepTopMass[i] = new TH1F(Form("LepTopMass_S%i_%s",i,option.Data()), "Top Mass (Leptonic)", 23 ,40 ,500);
+    h_LepTopMass[i] = new TH1F(Form("LepTopMass_S%i",i), "Top Mass (Leptonic)", 23 ,40 ,500);
     h_LepTopMass[i]->SetXTitle("Top Mass (Leptonic) (GeV)");
     h_LepTopMass[i]->Sumw2();
     histograms.push_back(h_LepTopMass[i]);
     histograms_MC.push_back(h_LepTopMass[i]);
 
-    h_HadWMass[i] = new TH1F(Form("HAdWMass_S%i_%s",i,option.Data()), "W Mass (Had Top)", 29 ,10 ,300);
+    h_HadWMass[i] = new TH1F(Form("HadWMass_S%i",i), "W Mass (Had Top)", 29 ,10 ,300);
     h_HadWMass[i]->SetXTitle("W Mass (Had Top) (GeV)");
     h_HadWMass[i]->Sumw2();
     histograms.push_back(h_HadWMass[i]);
     histograms_MC.push_back(h_HadWMass[i]);
 
-    h_HadTopMass[i] = new TH1F(Form("HadTopMass_S%i_%s",i,option.Data()), "Top Mass (Hadronic)", 23 ,40 ,500);
+    h_HadTopMass[i] = new TH1F(Form("HadTopMass_S%i",i), "Top Mass (Hadronic)", 23 ,40 ,500);
     h_HadTopMass[i]->SetXTitle("Top Mass (Hadronic) (GeV)");
     h_HadTopMass[i]->Sumw2();
     histograms.push_back(h_HadTopMass[i]);

@@ -156,6 +156,14 @@ void Plotter::Plot(std::string filename) {
 
 		}
 
+    TH1D *h_stack = (TH1D *)hs->GetStack()->Last();
+    TFile *outstack = TFile::Open("hist_stack.root","UPDATE");
+    h_stack->Write();
+    outstack->Close();
+
+    TFile *outdata = TFile::Open("hist_data.root","UPDATE");
+    data.at(0).at(i)->Write();
+    outdata->Close();
 
 		if (i == 0 && N_histos > 1) {
 			c->Print((filename+std::string("(")).c_str());
