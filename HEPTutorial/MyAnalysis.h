@@ -187,6 +187,7 @@ public:
    
    TH1F *h_NMuon;
 	 TH1F *h_NElectron; 
+   TH1F *h_Mmumu;
 	 TH1F *h_NJet_S[9];
 	 TH1F *h_NBJet_S[9];
    TH1F *h_metPt[9];

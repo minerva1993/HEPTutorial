@@ -74,6 +74,13 @@ void MyAnalysis::SlaveBegin(TTree * /*tree*/) {
   histograms.push_back(h_NElectron);
   histograms_MC.push_back(h_NElectron);
 
+
+  h_Mmumu = new TH1F("Mmumu", "Invariant di-muon mass", 60, 60, 120);
+  h_Mmumu->SetXTitle("m_{#mu#mu}");
+  h_Mmumu->Sumw2();
+  histograms.push_back(h_Mmumu);
+  histograms_MC.push_back(h_Mmumu);
+
   for(int i=0 ; i < 9; i++){
 
     h_NJet_S[i] = new TH1F(Form("NJet_S%i",i), "Number of jets", 12, 0, 12);
@@ -144,16 +151,15 @@ Bool_t MyAnalysis::Process(Long64_t entry) {
 
 /////Muon   
   int N_IsoMuon = 0;
-  MyMuon *singleMu;
+  MyMuon *singleMu, *diMu;
 
   for (vector<MyMuon>::iterator muon = Muons.begin(); muon != Muons.end(); ++muon){
     if (muon->IsIsolated(MuonRelIsoCut) && abs(muon->Eta()) < 2.4){
       ++N_IsoMuon;
       if (N_IsoMuon == 1) singleMu = &(*muon);
+      if (N_IsoMuon == 2) diMu = &(*muon);
     }
   }
-
-  h_NMuon->Fill(N_IsoMuon, EventWeight);
 
   ////Electron
   int N_IsoElectron = 0 ;
@@ -165,8 +171,6 @@ Bool_t MyAnalysis::Process(Long64_t entry) {
       if (N_IsoElectron == 1) singleEl = &(*elec);
     }
   }
-
-  h_NElectron->Fill(N_IsoElectron, EventWeight);
 
   ////Jets
   int N_Jets = 0;
@@ -208,10 +212,14 @@ Bool_t MyAnalysis::Process(Long64_t entry) {
 ////S1
   if (triggerIsoMu24){
 
+    h_NMuon->Fill(N_IsoMuon, EventWeight);
+    h_NElectron->Fill(N_IsoElectron, EventWeight);
     h_NJet_S[1]->Fill(N_Jets, EventWeight);
     h_NBJet_S[1]->Fill(N_BJets, EventWeight);
     h_metPt[1]->Fill(MET.Pt(),EventWeight);
-      ////S2
+    if (N_IsoMuon > 1) h_Mmumu->Fill((*singleMu+*diMu).M(),EventWeight);
+
+    ////S2
     if (N_IsoElectron == 1 || N_IsoMuon == 1){
       if (N_IsoElectron == 1) lepton = *singleMu;
       if (N_IsoMuon == 1) lepton = *singleEl;

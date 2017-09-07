@@ -5,17 +5,17 @@ void topMassFit(){
 
   //read root file
   TFile *_file0 = TFile::Open("hist_data.root");
-  TH1D *h_LepT=(TH1D*)_file0->Get("LepTopMass_S5");
+  TH1F *h_LepT=(TH1F*)_file0->Get("LepTopMass_S5");
   TH1F *h_HadT=(TH1F*)_file0->Get("HadTopMass_S5");
 
   TFile *_file1 = TFile::Open("hist_stack.root");
-  TH1D *h_LepTmc=(TH1D*)_file1->Get("LepTopMass_S5");
+  TH1F *h_LepTmc=(TH1F*)_file1->Get("LepTopMass_S5");
   TH1F *h_HadTmc=(TH1F*)_file1->Get("HadTopMass_S5");
 
   //create clone of hgg dist
-  TH1D *h_lepT = (TH1D*)h_LepT->Clone("h_lepT");
+  TH1F *h_lepT = (TH1F*)h_LepT->Clone("h_lepT");
   TH1F *h_hadT = (TH1F*)h_HadT->Clone();
-  TH1D *h_lepTmc = (TH1D*)h_LepTmc->Clone("h_lepTmc");
+  TH1F *h_lepTmc = (TH1F*)h_LepTmc->Clone("h_lepTmc");
   TH1F *h_hadTmc = (TH1F*)h_HadTmc->Clone();
 
 
