@@ -16,11 +16,11 @@ void zMassFit(){
 
 
   //define gaus fit fct
-  TF1 *mygaus = new TF1("mygaus", "[0]/(sqrt(2.0*3.14151927)*[2])*exp(-(x-[1])*(x-[1])/(2.0*[2]*[2]))", 30.0, 150.0);
+  TF1 *mygaus = new TF1("mygaus", "[0]/(sqrt(2.0*3.14151927)*[2])*exp(-(x-[1])*(x-[1])/(2.0*[2]*[2]))", 0.0, 200.0);
     mygaus->SetParName(0, "Normalize");
     mygaus->SetParName(1, "Mean");
     mygaus->SetParName(2, "Width");
-    double initval1[3] = { 13000, 90.0, 30};
+    double initval1[3] = { 13000, 90.0, 1};
     mygaus->SetParameters(initval1);
 
   //create canvas
@@ -33,8 +33,7 @@ void zMassFit(){
   Double_t par2   = r->Parameter(2);
   double initval3[3] = {par0,par1,par2};
 
-  //from TFitResult, we create bkg2 which will appear on our canvas
-  TF1*Mmumu = new TF1("Mmumu", "[8]*exp(-[9]*(x/100)+[10]*(x/100)*(x/100))", 30.0, 150.0);
+  TF1*Mmumu = new TF1("Mmumu", "[0]/(sqrt(2.0*3.14151927)*[2])*exp(-(x-[1])*(x-[1])/(2.0*[2]*[2]))", 30.0, 150.0);
   Mmumu->SetParameters(initval3);
 
   //draw

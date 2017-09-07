@@ -52,10 +52,10 @@ void topMassFit(){
   double initval4[3] = {par3,par4,par5};
 
   //from TFitResult, we create bkg2 which will appear on our canvas
-  TF1*lepT2 = new TF1("lepT2", "[8]*exp(-[9]*(x/100)+[10]*(x/100)*(x/100))", 100.0, 250.0);
+  TF1*lepT2 = new TF1("lepT2", "[8]/(sqrt(2.0*3.14151927)*[10])*exp(-(x-[9])*(x-[9])/(2.0*[10]*[10]))", 100.0, 250.0);
 	lepT2->SetParameters(initval3);
 
-  TF1*hadT2 = new TF1("hadT2", "[11]*exp(-[12]*(x/100)+[13]*(x/100)*(x/100))", 200.0, 250.0);
+  TF1*hadT2 = new TF1("hadT2", "[11]/(sqrt(2.0*3.14151927)*[13])*exp(-(x-[12])*(x-[12])/(2.0*[13]*[13]))", 200.0, 250.0);
   hadT2->SetParameters(initval4);
 
   //draw
